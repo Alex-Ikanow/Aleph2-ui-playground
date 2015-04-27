@@ -1,0 +1,180 @@
+<div ng-controller="importController">
+
+	<!-- Modal templates: -->
+	<div class="hide" ng-include="'partials/import_linked_source.html'"></div> 
+	<div class="hide" ng-include="'partials/import_enrichments.html'"></div> 
+	<div class="hide" ng-include="'partials/import_analytics.html'"></div> 
+	<div class="hide" ng-include="'partials/import_schemas.html'"></div> 
+	<div class="hide" ng-include="'partials/import_new_bucket.html'"></div> 
+
+	<div class="row">	
+		<div class="col-md-4">
+		
+			<!-- BUCKET LIST -->
+		
+			<div class="list-group">
+			
+				<div class="input-group">
+					<span class="input-group-btn">
+						<button class="btn btn-default disabled" type="button"><span class="glyphicon glyphicon-search"></span></button>
+					 </span>
+					<input type="text" class="form-control" placeholder="Buckets" ng-model="bucket_search">
+
+				      <div class="input-group-btn" ng-class='{open: new_bucket_open}'>
+					    <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" ng-click='new_bucket_open=!new_bucket_open'>New  <span class="caret"></span></button>
+				        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+				          <li><a href="#/import" ng-click="new_bucket_open=!new_bucket_open; openNewBucket('lg')">New Data Bucket...</a></li>
+				          <li><a href="#/import" ng-click="new_bucket_open=!new_bucket_open; openNewBucket('lg')">New Multi Bucket...</a></li>
+				          <li><a href="#/import" ng-click="new_bucket_open=!new_bucket_open; openNewBucket('lg')">New Admin Bucket... <span class="glyphicon glyphicon-asterisk"></span></a></li>
+				        </ul>
+				      </div>
+				      <span class="input-group-btn">
+						<button class="btn btn-default" type="button" tooltip-placement="right" tooltip="Sort buckets by..."><span class="glyphicon glyphicon-sort"></span></button>
+					 </span>
+				      <span class="input-group-btn">
+						<button class="btn" ng-click="show_admin_buckets = !show_admin_buckets" ng-model="show_admin_buckets" ng-class="{'btn-default': !show_admin_buckets, 'btn-danger': show_admin_buckets}" type="button" tooltip-placement="right" tooltip="{{show_admin_buckets ? 'Hide':'Show'}} admin buckets"><span class="glyphicon glyphicon-asterisk"></span></button>
+					 </span>
+				      
+				</div>			
+			
+				<a ng-click="selectBucket(it)" ng-class="{ 'active': isBucketSelected(it) }" ng-repeat="it in buckets | filter:bucket_search" class="list-group-item"><span class="badge">{{it.objects}}</span> {{it.name}}</a>
+			</div>		
+		</div>
+		
+		<!-- BUCKET CONFIGURATION -->
+		
+		<div class="col-md-8">
+			<div class="panel-group" id="accordion">
+
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<!-- TODO: currently only demo integration -->
+						<h4 class="panel-title">
+							<button class="btn btn-xs btn-default" tooltip-placement="left" tooltip="Edit bucket name" type="button"><span class="glyphicon glyphicon-edit"></span></button>
+							{{selected.name}}
+							<button class="pull-right btn btn-xs btn-default" tooltip-placement="left" tooltip="Save changes" type="button"><span class="glyphicon glyphicon-floppy-disk"></span></button>
+							<button class="pull-right btn btn-xs btn-default" tooltip-placement="left" tooltip="Undo last change" type="button"><span class="glyphicon glyphicon-arrow-left"></span></button>
+							<button class="pull-right btn btn-xs btn-default" tooltip-placement="left" tooltip="Reload bucket configuration" ng-click="refreshBucketList()" type="button"><span class="glyphicon glyphicon-refresh"></span></button>
+						</h4>
+						
+					</div>
+				</div>
+
+
+				<!--  Linked Source -->
+
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion">Linked Source</a>
+						</h4>
+					</div>
+					<div id="collapse1" class="panel-collapse collapse in">
+						<div class="panel-body">
+							<div class="container">
+								<p>
+									<b>Summary:</b> {{selected.source.summary}}
+								</p>
+							</div>
+							<div class="container">
+								<button class="btn btn-default">Type:
+									{{selected.source.type}}</button>
+								<button ng-click="openLinkedSource('lg')" class="btn btn-info">Configure...</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<!--  Enrichments -->
+
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion">Enrichments</a>
+						</h4>
+					</div>
+					<div id="collapse1" class="panel-collapse collapse in">
+						<div class="panel-body">
+						
+					   	  	<span ng-repeat="it in selected.enrichments"><button ng-click="openEnrichments('lg')" class="btn btn-default">{{it}}...</button>    </span>
+			    	      	<button class="btn btn-info" ng-click="openEnrichments('lg')">Add...</button>
+						
+						</div>
+					</div>
+				</div>
+				
+				<!--  Schema -->
+
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion">Store and Index Settings</a>
+						</h4>
+					</div>
+					<div id="collapse1" class="panel-collapse collapse in">
+						<div class="panel-body">
+
+							<div class="col-md-6">
+
+								<span class="checkbox"> <label><input
+										type="checkbox" ng-model="selected.schema.isSearchable">
+										Searchable</label> <a ng-click="openSchemas('lg')" class="glyphicon glyphicon-cog"></a>
+								</span> <span class="checkbox"> <label><input
+										type="checkbox" ng-model="selected.schema.isTimeSliced">
+										Time Sliced</label> <a ng-click="openSchemas('lg')" class="glyphicon glyphicon-cog"></a>
+								</span> <span class="checkbox"> <label><input
+										type="checkbox" ng-model="selected.schema.isCustomEnabled">
+										Custom...</label> <a ng-click="openSchemas('lg')" class="glyphicon glyphicon-cog"></a>
+								</span>
+
+							</div>
+							<div layout="col-md-6">
+
+								<span class="checkbox"> <label><input
+										type="checkbox"
+										ng-model="selected.schema.isGeoAnalysisEnabled"> Geo
+										Analysis Enabled</label> <a ng-click="openSchemas('lg')"
+									class="glyphicon glyphicon-cog"></a>
+								</span> <span class="checkbox"> <label><input
+										type="checkbox"
+										ng-model="selected.schema.isNumericAnalysisEnabled">
+										Numeric Analysis Enabled</label> <a ng-click="openSchemas('lg')"
+									class="glyphicon glyphicon-cog"></a>
+								</span> <span class="checkbox"> <label><input
+										type="checkbox"
+										ng-model="selected.schema.isGraphAnalysisEnabled">
+										Graph Analysis Enabled</label> <a ng-click="openSchemas('lg')"
+									class="glyphicon glyphicon-cog"></a>
+								</span>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				
+				<!--  Analytics -->
+
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title">
+							<a data-toggle="collapse" data-parent="#accordion">Analytics</a>
+						</h4>
+					</div>
+					<div id="collapse1" class="panel-collapse collapse in">
+						<div class="panel-body">
+
+							<span ng-repeat="it in selected.availableAnalytics"><button
+									class="btn btn-default" ng-click="openAnalytics('lg')">{{it}}...</button></span> <span>
+							<button
+									class="btn btn-info" ng-click="openAnalytics('lg')">Custom Real-time...</button></span> <span>
+							<button
+									class="btn btn-info" ng-click="openAnalytics('lg')">Custom Batch...</button></span>
+
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+</div>

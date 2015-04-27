@@ -1,0 +1,22 @@
+<div class="container">
+    <h3>This page illustrates some doc/record display concepts.</h3> 
+</div>
+
+<div role="tabpanel">
+	
+	<ul id="analyze_tab" class="nav nav-tabs" role="tablist">
+		<li ng-class="{'active': example_tabs[0]}" ><a ng-click="tabClick($event, 0)" data-toggle="tab" href="#spreadsheet_view" role="tab">Spreadsheet View</a></li>		
+		<li ng-class="{'active': example_tabs[1]}" ><a ng-click="tabClick($event, 1)" data-toggle="tab" href="#document_view" role="tab">Document View</a></li>
+	</ul>
+	
+	<div id="analyze_tab_content" class="tab-content">
+	
+		<div ng-class="{'active': example_tabs[0]}" class="tab-pane" id="spreadsheet_view">
+			<p>1</p>
+		</div>
+		<div ng-class="{'active': example_tabs[1]}"class="tab-pane" id="document_view">
+			<p>2</p>
+		</div>
+	
+	</div>
+</div>

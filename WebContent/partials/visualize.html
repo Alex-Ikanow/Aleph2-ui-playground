@@ -1,0 +1,26 @@
+<div class="container">
+    <h3>This page illustrates some more non-standard visualize concepts.</h3> 
+</div>
+
+<div role="tabpanel">
+	
+	<ul id="analyze_tab" class="nav nav-tabs" role="tablist">
+		<li ng-class="{'active': example_tabs[0]}" ><a ng-click="tabClick($event, 0)" data-toggle="tab" href="#cross_filter_view" role="tab" tooltip-placement="right" tooltip="SOURCE: http://dc-js.github.io/dc.js/examples/heatmap-filtering.html">Cross Filter</a></li>		
+		<li ng-class="{'active': example_tabs[1]}" ><a ng-click="tabClick($event, 1)" data-toggle="tab" href="#large_graph_view" role="tab">Large Scale Graph</a></li>
+		<li ng-class="{'active': example_tabs[2]}" ><a ng-click="tabClick($event, 2)" data-toggle="tab" href="#small_graph_view" role="tab" tooltip-placement="right" tooltip="SOURCE: http://bl.ocks.org/mbostock/raw/1062288/">Small Scale Graph</a></li>
+	</ul>
+	
+	<div id="analyze_tab_content" class="tab-content">
+	
+		<div ng-class="{'active': example_tabs[0]}" class="tab-pane" id="cross_filter_view">
+			<iframe class="visualize_iframe" src="http://dc-js.github.io/dc.js/examples/heatmap-filtering.html"></iframe>
+		</div>
+		<div ng-class="{'active': example_tabs[1]}"class="tab-pane" id="large_graph_view">
+			<iframe class="visualize_iframe" src="./external/gephi_test/index.html"></iframe>
+		</div>
+		<div ng-class="{'active': example_tabs[2]}"class="tab-pane" id="small_graph_view">
+			<iframe class="visualize_iframe" src="http://bl.ocks.org/mbostock/raw/1062288/"></iframe>
+		</div>
+	
+	</div>
+</div>

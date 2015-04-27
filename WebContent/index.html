@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html ng-app="insightAdminApp">
+
+	<head>
+	    <meta charset="utf-8" />
+	    <title>InSight Manager</title>
+	
+		<!-- External includes -->
+	
+	    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />	
+		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>		
+	    <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.6.0.js"></script>
+
+		<!-- Styles -->
+
+		<link rel="stylesheet" type="text/css" href="app.css">
+		<link rel="stylesheet" type="text/css" href="styles/visualize.css">
+
+		<!-- Controllers -->
+		
+	    <script src="app.js"></script>	    
+	    <script src="controllers/import.js"></script>
+	    <script src="controllers/import_linked_source.js"></script>
+	    <script src="controllers/import_enrichments.js"></script>
+	    <script src="controllers/import_analytics.js"></script>
+	    <script src="controllers/import_schemas.js"></script>
+	    <script src="controllers/import_new_bucket.js"></script>
+	    <script src="controllers/analyze.js"></script>
+	    <script src="controllers/visualize.js"></script>
+	    
+	    <!--  Services -->
+	    <script src="services/bucketService.js"></script>	    
+	    
+	</head>
+
+	<body ng-controller="mainController">
+	
+		<nav class="navbar navbar-inverse">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="#/import">INSIGHT</a>
+				</div>
+				<div>
+					<ul class="nav navbar-nav">
+						<li ng-class="{ active: isActive('/administer')}"><a href="#administer">Administer</a></li>
+						<li ng-class="{ active: isActive('/import')}"><a href="#import">Import</a></li>
+						<li ng-class="{ active: isActive('/analyze')}"><a href="#analyze">Analyze</a></li>
+						<li ng-class="{ active: isActive('/visualize')}"><a href="#visualize">Visualize</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		
+		<div ng-view></div>
+	</body>
+
+</html>
